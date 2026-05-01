@@ -10,7 +10,7 @@ namespace Watchlist.Data
 
         public AccountUser(): base()
         {
-        
+            FilmList = new HashSet<FilmUser>();
         }
     }
 }
