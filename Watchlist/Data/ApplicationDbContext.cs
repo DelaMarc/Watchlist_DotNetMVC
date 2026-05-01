@@ -11,7 +11,7 @@ namespace Watchlist.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<FilmUser>().HasKey(t => new { t.UserID, t.FilmID });
+            builder.Entity<FilmUser>().HasKey(t => new { t.UserId, t.FilmID });
         }
     }
 }

@@ -28,10 +28,10 @@ namespace Watchlist.Controllers
         public async Task<IActionResult> Index()
         {
             var id = await GetCurrentUserId();
-            var filmsUser = m_context.FilmUsers.Where(x => x.UserID.ToString() == id);
+            var filmsUser = m_context.FilmUsers.Where(x => x.AccountUser.Id == id);
             var model = filmsUser.Select(x => new ModelViewFilm
             {
-                IdFilm = x.FilmID,
+                IdFilm = x.Film.Id,
                 Title = x.Film.Title,
                 Year = x.Film.Year,
                 Watched = x.Watched,
