@@ -176,10 +176,12 @@ namespace Watchlist.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -216,10 +218,12 @@ namespace Watchlist.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -251,27 +255,27 @@ namespace Watchlist.Data.Migrations
 
             modelBuilder.Entity("Watchlist.Data.FilmUser", b =>
                 {
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("FilmID")
                         .HasColumnType("int");
 
-                    b.Property<int>("Note")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Seen")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("AccountUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("UserID", "FilmID");
+                    b.Property<int>("Note")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Watched")
+                        .HasColumnType("bit");
+
+                    b.HasKey("UserId", "FilmID");
+
+                    b.HasIndex("AccountUserId");
 
                     b.HasIndex("FilmID");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("FilmUsers");
                 });
@@ -340,21 +344,21 @@ namespace Watchlist.Data.Migrations
 
             modelBuilder.Entity("Watchlist.Data.FilmUser", b =>
                 {
+                    b.HasOne("Watchlist.Data.AccountUser", "AccountUser")
+                        .WithMany("FilmList")
+                        .HasForeignKey("AccountUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Watchlist.Data.Film", "Film")
                         .WithMany()
                         .HasForeignKey("FilmID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Watchlist.Data.AccountUser", "User")
-                        .WithMany("FilmList")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("AccountUser");
 
                     b.Navigation("Film");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Watchlist.Data.AccountUser", b =>
