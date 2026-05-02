@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Watchlist.Data.Film>
+﻿@model IEnumerable<Watchlist.Models.ModelViewFilm>
 
 @{
     ViewData["Title"] = "Index";
@@ -18,6 +18,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Year)
             </th>
+            <th>
+                Présent dans la liste
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -30,12 +33,41 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Year)
             </td>
+                <td>
+                    <button id="@item.IdFilm" data-val="@item.PresentInList" class="btn btn-@(item.PresentInList ? "danger" : "success")">
+                        @(item.PresentInList ? " - " : " + ")
+                    </button>
+                </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.IdFilm">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdFilm">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdFilm">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        jQuery(document).ready(function (){
+            $('.btn').click(function (e) {
+                var btn = $(this);
+                var idFilm = btn.attr('id');
+                var valFilm = btn.attr('data-val') == "False" ? 0 : 1;
+                $.get('/Films/AddRemove?id=' + idFilm + '&val=' + valFilm, function (data){
+                    if (data == 0){
+                        btn.attr('data-val', 'False');
+                        btn.attr('class', 'btn btn-success');
+                        btn.html(' + ');
+                    }
+                    else if (data == 1){
+                        btn.attr('data-val', 'True');
+                        btn.attr('class', 'btn btn-danger');
+                        btn.html(' - ');
+                    }
+                });
+            });
+        });
+    </script>
+}
