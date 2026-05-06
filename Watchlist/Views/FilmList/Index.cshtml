@@ -19,9 +19,6 @@
                 @Html.DisplayNameFor(model => model.Year)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PresentInList)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Watched)
             </th>
             <th>
@@ -40,6 +37,12 @@
                 @Html.DisplayFor(modelItem => item.Year)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Watched)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
                     <a asp-action="Edit" asp-route-id="@item.IdFilm">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.IdFilm">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.IdFilm">Delete</a>
@@ -48,3 +51,25 @@
 }
     </tbody>
 </table>
+
+@section Scripts{
+    <script>
+        jQuery(document).ready(function (){
+            $('.btn').click(function (e) {
+                var btn = $(this);
+                var idFilm = btn.attr('id');
+                var valFilm = btn.attr('presentInList-val') == "False" ? 0 : 1;
+                $.get('/Films/AddRemove?id=' + idFilm + '&val=' + valFilm, function (data){
+                    if (data == 0){
+                        btn.attr('presentInList-val', 'False');
+                        btn.html(' + ');
+                    }
+                    else if (data == 1){
+                        btn.attr('presentInList-val', 'True');
+                        btn.html(' - ');
+                    }
+                });
+            });
+        });
+    </script>
+}
