@@ -14,6 +14,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Watchlist.Controllers
 {
+    [Authorize]
     public class FilmsController : Controller
     {
         private readonly ApplicationDbContext m_context;

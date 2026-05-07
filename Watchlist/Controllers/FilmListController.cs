@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Watchlist.Data;
@@ -7,6 +8,7 @@ using Watchlist.Models;
 
 namespace Watchlist.Controllers
 {
+    [Authorize]
     public class FilmListController : Controller
     {
         private readonly ApplicationDbContext m_context;
